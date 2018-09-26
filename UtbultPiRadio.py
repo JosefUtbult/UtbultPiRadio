@@ -2,8 +2,8 @@
 # from RPi import GPIO
 from time import sleep, time
 from os import system
-
-# from pyautogui import hotkey, press, keyUp, keyDown
+from pyvirtualdisplay import Display
+from pyautogui import hotkey, press, keyUp, keyDown
 
 CLK = 17
 DT = 18
@@ -12,18 +12,11 @@ ROTATIONAMOUNT = 4
 # leds = [LED(5), LED(6), LED(13), LED(19), LED(26)]
 lastTime = None
 
-
 def main():
     global lastTime
 
-    while True:
-        try:
-            from pyautogui import hotkey, press, keyUp, keyDown
-            break
-
-        except:
-            print("Trying to open display")
-            sleep(2)
+    display = Display(visible=0, size=(800, 600))
+    display.start()
 
     data = {'counter': 0, 'clkLastState': 0, 'currentSite': sites[0]}
 
@@ -34,6 +27,9 @@ def main():
     init()
 
 
+
+
+
 #    while True:
 #        lastCounter = data['counter']
 #        data = set_site(clock_up(data))
@@ -42,9 +38,8 @@ def main():
 #            print(data['counter'])
 
 
+
 def init():
-
-
     try:
         GPIO.setmode(GPIO.BCM)
 
@@ -130,8 +125,6 @@ def open_youtube(url):
 
 
 def close_youtube():
-    from pyautogui import hotkey, press, keyUp, keyDown
-
     print('close youtube')
 
     # hotkey('w', 'ctrl')
@@ -143,6 +136,7 @@ def close_youtube():
     keyUp('ctrl')
 
 
+
 def open_spotify(url):
     print('open spotify with url ' + url)
 
@@ -150,8 +144,6 @@ def open_spotify(url):
 
 
 def close_spotify():
-    from pyautogui import hotkey, press, keyUp, keyDown
-
     print('close spotify')
 
     # hotkey('w', 'ctrl')
