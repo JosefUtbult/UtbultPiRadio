@@ -17,13 +17,13 @@ def main():
     global lastTime
 
     while True:
-    	try:
-		from pyautogui import hotkey, press, keyUp, keyDown
-		break
-    	except:
-		print("Trying to open display")
-		sleep(2)
+        try:
+            from pyautogui import hotkey, press, keyUp, keyDown
+            break
 
+        except:
+            print("Trying to open display")
+            sleep(2)
 
     data = {'counter': 0, 'clkLastState': 0, 'currentSite': sites[0]}
 
@@ -33,7 +33,6 @@ def main():
 
     init()
 
-    
 
 #    while True:
 #        lastCounter = data['counter']
@@ -43,8 +42,9 @@ def main():
 #            print(data['counter'])
 
 
-
 def init():
+
+
     try:
         GPIO.setmode(GPIO.BCM)
 
@@ -130,6 +130,8 @@ def open_youtube(url):
 
 
 def close_youtube():
+    from pyautogui import hotkey, press, keyUp, keyDown
+
     print('close youtube')
 
     # hotkey('w', 'ctrl')
@@ -139,9 +141,8 @@ def close_youtube():
 
     keyUp('w')
     keyUp('ctrl')
-    
 
-    
+
 def open_spotify(url):
     print('open spotify with url ' + url)
 
@@ -149,6 +150,8 @@ def open_spotify(url):
 
 
 def close_spotify():
+    from pyautogui import hotkey, press, keyUp, keyDown
+
     print('close spotify')
 
     # hotkey('w', 'ctrl')
