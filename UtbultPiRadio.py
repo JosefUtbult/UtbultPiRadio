@@ -24,12 +24,15 @@ def main():
 
     init()
 
-    while True:
-        lastCounter = data['counter']
-        data = set_site(clock_up(data))
+    
 
-        if lastCounter != data['counter']:
-            print(data['counter'])
+#    while True:
+#        lastCounter = data['counter']
+#        data = set_site(clock_up(data))
+#
+#        if lastCounter != data['counter']:
+#            print(data['counter'])
+
 
 
 def init():
@@ -114,7 +117,7 @@ def set_site(data):
 def open_youtube(url):
     print('open youtube with url ' + url)
 
-    system('firefox %s &' % url)
+    system('chromium-browser %s &' % url)
 
 
 def close_youtube():
@@ -133,7 +136,7 @@ def close_youtube():
 def open_spotify(url):
     print('open spotify with url ' + url)
 
-    system('firefox %s &' % url)
+    system('chromium-browser %s &' % url)
 
 
 def close_spotify():
