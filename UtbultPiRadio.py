@@ -28,7 +28,7 @@ def main(sleep1=sleep(2)):
             print("Could not open pyautogui")
             sleep(2)
 
-    data = {'counter': 0, 'clkLastState': 0, 'currentSite': sites[0]}
+    data = {'counter': 0, 'clkLastState': 0, 'currentSite': sites[2]}
 
     data['currentSite']['open'](data['currentSite']['url'])
 
