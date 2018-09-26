@@ -3,7 +3,7 @@
 from time import sleep, time
 from os import system
 
-from pyautogui import hotkey, press, keyUp, keyDown
+# from pyautogui import hotkey, press, keyUp, keyDown
 
 CLK = 17
 DT = 18
@@ -15,6 +15,15 @@ lastTime = None
 
 def main():
     global lastTime
+
+    while True:
+    	try:
+		from pyautogui import hotkey, press, keyUp, keyDown
+		break
+    	except:
+		print("Trying to open display")
+		sleep(2)
+
 
     data = {'counter': 0, 'clkLastState': 0, 'currentSite': sites[0]}
 
