@@ -3,6 +3,8 @@
 from time import sleep, time
 from os import system
 
+from pyautogui import hotkey, press, keyUp, keyDown
+
 CLK = 17
 DT = 18
 ROTATIONAMOUNT = 4
@@ -112,17 +114,38 @@ def set_site(data):
 def open_youtube(url):
     print('open youtube with url ' + url)
 
+    system('firefox %s &' % url)
+
 
 def close_youtube():
     print('close youtube')
 
+    # hotkey('w', 'ctrl')
+    keyDown('w')
+    keyDown('ctrl')
+    sleep(1)
 
+    keyUp('w')
+    keyUp('ctrl')
+    
+
+    
 def open_spotify(url):
     print('open spotify with url ' + url)
+
+    system('firefox %s &' % url)
 
 
 def close_spotify():
     print('close spotify')
+
+    # hotkey('w', 'ctrl')
+    keyDown('w')
+    keyDown('ctrl')
+    sleep(1)
+
+    keyUp('w')
+    keyUp('ctrl')
 
 
 sites = [
