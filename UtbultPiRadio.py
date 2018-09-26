@@ -3,7 +3,7 @@
 from time import sleep, time
 from os import system
 from pyvirtualdisplay import Display
-from pyautogui import hotkey, press, keyUp, keyDown
+# from pyautogui import hotkey, press, keyUp, keyDown
 
 CLK = 17
 DT = 18
@@ -12,11 +12,21 @@ ROTATIONAMOUNT = 4
 # leds = [LED(5), LED(6), LED(13), LED(19), LED(26)]
 lastTime = None
 
-def main():
+def main(sleep1=sleep(2)):
     global lastTime
 
     display = Display(visible=0, size=(800, 600))
     display.start()
+
+    while True:
+        try:
+            from pyautogui import hotkey, press, keyUp, keyDown
+            print("Imported pyautogui!")
+            break
+
+        except:
+            print("Could not open pyautogui")
+            sleep(2)
 
     data = {'counter': 0, 'clkLastState': 0, 'currentSite': sites[0]}
 
