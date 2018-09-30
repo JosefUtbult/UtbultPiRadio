@@ -3,6 +3,7 @@ from RPi import GPIO
 from time import sleep, time
 from os import system
 from pyvirtualdisplay import Display
+
 # from pyautogui import hotkey, press, keyUp, keyDown
 
 CLK = 17
@@ -14,7 +15,8 @@ ROTATIONAMOUNT = 20
 lastTime = None
 display = None
 
-def main(sleep1=sleep(2)):
+
+def main():
     global lastTime
     global display
 
@@ -53,14 +55,14 @@ def main(sleep1=sleep(2)):
 
     finally:
         print('Terminating process')
-        
+
         system('pkill -f chromium-browser')
 
         GPIO.cleanup()
 
         display.stop()
 
-    
+
 def init():
     try:
 
@@ -83,6 +85,9 @@ def clock_up(data):
 
 
 def read_encoder(data):
+    global CLK
+    global DT
+
     try:
 
         clkState = GPIO.input(CLK)
@@ -155,7 +160,7 @@ def open_spotify(url):
 
 def close_site():
     print('close site')
-    
+
     keyDown('w')
     keyDown('ctrl')
     sleep(1)
@@ -164,6 +169,7 @@ def close_site():
     keyUp('ctrl')
 
     system('pkill -f chromium-browser')
+
 
 sites = [
 
