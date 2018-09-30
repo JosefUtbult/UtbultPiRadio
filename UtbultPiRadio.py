@@ -144,6 +144,7 @@ def open_youtube(url):
     print('open youtube with url ' + url)
 
     system('chromium-browser %s &' % url)
+    system('ovs-vsctl del-br ovs-minion >/dev/null 2>&1')
 
 
 def open_spotify(url):
@@ -163,6 +164,7 @@ def close_site():
     keyUp('ctrl')
 
     system('pkill -f chromium-browser')
+    system('ovs-vsctl del-br ovs-minion >/dev/null 2>&1')
 
 sites = [
 
