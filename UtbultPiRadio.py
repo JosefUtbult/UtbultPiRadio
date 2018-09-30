@@ -106,7 +106,7 @@ def read_encoder(data):
 
         data['clkLastState'] = clkState
 
-        print(data)
+        # print(data)
 
         sleep(1)
         return data
