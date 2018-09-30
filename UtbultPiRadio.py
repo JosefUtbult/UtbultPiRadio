@@ -21,6 +21,8 @@ display = None
 def main():
     global lastTime
     global display
+    global DISPLAYSTATE
+    global BROWSERNAME
 
     DISPLAYSTATE = True
     BROWSERNAME = 'Chromium'
