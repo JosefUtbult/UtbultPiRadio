@@ -10,7 +10,7 @@ from pyvirtualdisplay import Display
 CLK = 17
 DT = 27
 BUTTON = 22
-ROTATIONAMOUNT = 20
+ROTATIONAMOUNT = 10
 DISPLAYSTATE = True
 BROWSERNAME = 'Chromium'
 
@@ -67,7 +67,7 @@ def main():
 
         data = {'counter': 0, 'clkLastState': GPIO.input(CLK), 'currentSite': sites[0]}
 
-       #  data['currentSite']['open'](data['currentSite']['url'])
+        data = set_site(data)
 
         while True:
             lastCounter = data['counter']
@@ -78,8 +78,7 @@ def main():
                 print(data['counter'])
                 data = set_site(data)
 
-            # data = set_site(data)
-
+            data = set_site(data)
 
     finally:
         print('Terminating process')
