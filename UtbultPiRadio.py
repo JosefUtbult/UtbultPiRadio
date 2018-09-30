@@ -34,16 +34,22 @@ def main():
 
                 if argv[instance + 1] in ['false', 'FALSE', 'False']:
                     DISPLAYSTATE = False
+                    print("Using the native display")
+                else:
+                    print("Generating a virtul display")
 
-                elif argv[instance] == '-browser':
+            if argv[instance] == '-browser':
 
-                    if argv[instance + 1] in ['chromium', 'Chromium']:
+                if argv[instance + 1] in ['chromium', 'Chromium']:
 
-                        BROWSERNAME = 'Chromium'
+                    BROWSERNAME = 'Chromium'
+                    print("Seting browser to Chromium")
 
-                    elif argv[instance + 1] in ['firefox', 'Firefox']:
+                elif argv[instance + 1] in ['firefox', 'Firefox']:
 
-                        BROWSERNAME = 'Firefox'
+                    BROWSERNAME = 'Firefox'
+                    print("Seting browser to Firefox")
+
 
         except IndexError:
 
