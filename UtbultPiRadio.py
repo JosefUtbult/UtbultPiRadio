@@ -75,7 +75,6 @@ def main():
 
         data = {'counter': 0, 'clkLastState': GPIO.input(CLK), 'currentSite': sites[0]}
 
-        data = set_site(data)
         close_site()
         data['currentSite']['open'](data['currentSite']['url'])
 
