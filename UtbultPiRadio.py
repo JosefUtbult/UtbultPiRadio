@@ -33,13 +33,13 @@ def main(sleep1=sleep(2)):
                 print("Could not open pyautogui")
                 sleep(2)
 
+        init()
+
         data = {'counter': 0, 'clkLastState': GPIO.input(CLK), 'currentSite': sites[0]}
 
         data['currentSite']['open'](data['currentSite']['url'])
 
         lastTime = time()
-
-        init()
 
         while True:
             lastCounter = data['counter']
