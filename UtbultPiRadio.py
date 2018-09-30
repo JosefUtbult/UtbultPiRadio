@@ -33,7 +33,7 @@ def main(sleep1=sleep(2)):
                 print("Could not open pyautogui")
                 sleep(2)
 
-        data = {'counter': 0, 'clkLastState': 0, 'currentSite': sites[0]}
+        data = {'counter': 0, 'clkLastState': GPIO.input(CLK), 'currentSite': sites[0]}
 
         data['currentSite']['open'](data['currentSite']['url'])
 
@@ -45,6 +45,7 @@ def main(sleep1=sleep(2)):
             lastCounter = data['counter']
 
             data = read_encoder(data)
+
             if lastCounter != data['counter']:
                 print(data['counter'])
 
@@ -62,11 +63,11 @@ def main(sleep1=sleep(2)):
     
 def init():
     try:
-        GPIO.setmode(GPIO.BCM)
 
-        GPIO.setup(CLK, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-        GPIO.setup(DT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-        GPIO.setup(BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(CLK, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.setup(DT, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.setup(BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
     except NameError:
         print("GPIO is not defined. Uncomment the import if you are using a Raspberry")
@@ -82,16 +83,14 @@ def clock_up(data):
 
 
 def read_encoder(data):
-    data = dict(data)
-
     try:
 
-        clk_state = GPIO.input(CLK)
-        dt_state = GPIO.input(DT)
+        clkState = GPIO.input(CLK)
+        dtState = GPIO.input(DT)
 
-        if clk_state != data['clkLastState']:
+        if clkState != data['clkLastState']:
 
-            if dt_state != clk_state:
+            if dtState != clkState:
 
                 data['counter'] += 1
 
@@ -99,14 +98,15 @@ def read_encoder(data):
 
                 data['counter'] -= 1
 
-        data['clkLastState'] = clk_state
+        data['clkLastState'] = clkState
 
+        sleep(0.01)
         return data
 
     except ValueError as e:
         print("Tried to run read_encoder with an incorrect input list. \n" + e)
 
-        return {'counter': 0, 'clkLastState': 0, 'currentSite': data['currentSite']}
+        return {'counter': 0, 'clkLastState': 0, 'currentSite': sites[0]}
 
 
 def set_site(data):
