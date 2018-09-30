@@ -56,9 +56,6 @@ def main(sleep1=sleep(2)):
         system('pkill -f chromium-browser')
 
         GPIO.cleanup()
-        system('^C')
-        system('^C')
-        system('^C')
 
         display.stop()
 
