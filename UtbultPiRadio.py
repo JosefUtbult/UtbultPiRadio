@@ -39,7 +39,7 @@ def main():
 
         data = {'counter': 0, 'clkLastState': GPIO.input(CLK), 'currentSite': sites[0]}
 
-        data['currentSite']['open'](data['currentSite']['url'])
+       #  data['currentSite']['open'](data['currentSite']['url'])
 
         lastTime = time()
 
