@@ -48,7 +48,7 @@ def main():
             if lastCounter != data['counter']:
                 print(data['counter'])
 
-            print("Here")
+            print(data)
             # data = set_site(data)
 
 
