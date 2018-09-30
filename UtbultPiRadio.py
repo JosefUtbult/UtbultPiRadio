@@ -106,7 +106,9 @@ def read_encoder(data):
 
         data['clkLastState'] = clkState
 
-        sleep(0.01)
+        print(data)
+
+        sleep(1)
         return data
 
     except ValueError as e:
