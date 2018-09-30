@@ -160,7 +160,6 @@ def set_site(data):
         data['currentSite'] = sites[index % len(sites)]
 
         data['currentSite']['open'](data['currentSite']['url'])
-        print('Changing site to %d' % sites.index(data['currentSite']))
 
     elif data['counter'] <= -1 * ROTATIONAMOUNT:
 
@@ -172,7 +171,6 @@ def set_site(data):
         data['currentSite'] = sites[index % len(sites)]
 
         data['currentSite']['open'](data['currentSite']['url'])
-        print('Changing site to %d' % sites.index(data['currentSite']))
 
     return data
 
@@ -180,7 +178,7 @@ def set_site(data):
 def open_youtube(url):
     global BROWSERNAME
 
-    print('open youtube with url ' + url)
+    print('Open youtube with url ' + url)
 
     if BROWSERNAME == 'Chromium':
         system('chromium-browser %s &' % url)
@@ -193,6 +191,8 @@ def open_youtube(url):
 
 def open_spotify(url):
     global BROWSERNAME
+
+    print('Opening spotify with raspotify')
 
     system('sudo systemctl start raspotify.service')
 
