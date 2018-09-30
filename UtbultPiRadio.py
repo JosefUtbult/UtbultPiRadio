@@ -49,7 +49,7 @@ def main(sleep1=sleep(2)):
             if lastCounter != data['counter']:
                 print(data['counter'])
 
-            data = set_site(data)
+            # data = set_site(data)
 
     finally:
         print('Terminating process')
