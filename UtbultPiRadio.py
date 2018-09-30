@@ -56,8 +56,11 @@ def main(sleep1=sleep(2)):
         system('pkill -f chromium-browser')
 
         GPIO.cleanup()
+        system('^C')
+        system('^C')
+        system('^C')
+
         display.stop()
-        system('ovs-vsctl del-br ovs-minion >/dev/null 2>&1')
 
     
 def init():
