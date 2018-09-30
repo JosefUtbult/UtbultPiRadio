@@ -11,8 +11,8 @@ CLK = 17
 DT = 27
 BUTTON = 22
 ROTATIONAMOUNT = 10
-DISPLAYSTATE = True
-BROWSERNAME = 'Chromium'
+DISPLAYSTATE = None
+BROWSERNAME = None
 
 # leds = [LED(5), LED(6), LED(13), LED(19), LED(26)]
 display = None
@@ -21,6 +21,9 @@ display = None
 def main():
     global lastTime
     global display
+
+    DISPLAYSTATE = True
+    BROWSERNAME = 'Chromium'
 
 
     for instance in range(0, len(argv)):
