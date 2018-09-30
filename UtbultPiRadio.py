@@ -2,6 +2,7 @@ from gpiozero import LED
 from RPi import GPIO
 from time import sleep
 from os import system
+from sys import argv
 from pyvirtualdisplay import Display
 
 # from pyautogui import hotkey, press, keyUp, keyDown
@@ -10,6 +11,8 @@ CLK = 17
 DT = 27
 BUTTON = 22
 ROTATIONAMOUNT = 20
+DISPLAYSTATE = True
+BROWSERNAME = 'Chromium'
 
 # leds = [LED(5), LED(6), LED(13), LED(19), LED(26)]
 display = None
@@ -19,10 +22,36 @@ def main():
     global lastTime
     global display
 
+
+    for instance in range(0, len(argv)):
+        try:
+
+            if argv[instance] == '-display':
+
+                if argv[instance + 1] in ['false', 'FALSE', 'False']:
+                    DISPLAYSTATE = False
+
+                elif argv[instance] == '-browser':
+
+                    if argv[instance + 1] in ['chromium', 'Chromium']:
+
+                        BROWSERNAME = 'Chromium'
+
+                    elif argv[instance + 1] in ['firefox', 'Firefox']:
+
+                        BROWSERNAME = 'Firefox'
+
+
+
+
+        except IndexError:
+            pass
+
     try:
 
-        display = Display(visible=0, size=(800, 600))
-        display.start()
+        if DISPLAYSTATE:
+            display = Display(visible=0, size=(800, 600))
+            display.start()
 
         while True:
             try:
@@ -47,8 +76,8 @@ def main():
 
             if lastCounter != data['counter']:
                 print(data['counter'])
+                data = set_site(data)
 
-            print(data)
             # data = set_site(data)
 
 
@@ -59,7 +88,8 @@ def main():
 
         GPIO.cleanup()
 
-        display.stop()
+        if DISPLAYSTATE:
+            display.stop()
 
 
 def init():
@@ -142,13 +172,24 @@ def set_site(data):
 def open_youtube(url):
     print('open youtube with url ' + url)
 
-    system('chromium-browser %s &' % url)
+    if BROWSERNAME == 'Chromium':
+        system('chromium-browser %s &' % url)
+    elif BROWSERNAME == 'Firefox':
+        system('firefox %s &' % url)
 
+    else:
+        print("There are no browser named " + BROWSERNAME)
 
 def open_spotify(url):
     print('open spotify with url ' + url)
 
-    system('chromium-browser %s &' % url)
+    if BROWSERNAME == 'Chromium':
+        system('chromium-browser %s &' % url)
+    elif BROWSERNAME == 'Firefox':
+        system('firefox %s &' % url)
+
+    else:
+        print("There are no browser named " + BROWSERNAME)
 
 
 def close_site():
@@ -161,7 +202,14 @@ def close_site():
     keyUp('w')
     keyUp('ctrl')
 
-    system('pkill -f chromium-browser')
+    if BROWSERNAME == 'Chromium':
+        system('pkill -f chromium-browser')
+
+    elif BROWSERNAME == 'Firefox':
+        system('pkill -f firefox')
+
+    else:
+        print("There are no browser named " + BROWSERNAME)
 
 
 sites = [
