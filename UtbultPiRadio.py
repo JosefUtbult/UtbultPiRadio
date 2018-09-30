@@ -153,7 +153,7 @@ def set_site(data):
         data['currentSite'] = sites[index % len(sites)]
 
         data['currentSite']['open'](data['currentSite']['url'])
-        print('Changing site to %d' % sites.index(data['currentSite']['url']))
+        print('Changing site to %d' % sites.index(data['currentSite']))
 
     elif data['counter'] <= -1 * ROTATIONAMOUNT:
 
@@ -165,7 +165,7 @@ def set_site(data):
         data['currentSite'] = sites[index % len(sites)]
 
         data['currentSite']['open'](data['currentSite']['url'])
-        print('Changing site to %d' % sites.index(data['currentSite']['url']))
+        print('Changing site to %d' % sites.index(data['currentSite']))
 
     return data
 
