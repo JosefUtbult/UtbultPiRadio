@@ -98,12 +98,13 @@ def read_encoder(data):
             if dtState != clkState:
 
                 data['counter'] += 1
-
             else:
 
                 data['counter'] -= 1
 
-        data['clkLastState'] = clkState
+            print(data['counter'])
+
+            data['clkLastState'] = clkState
 
         sleep(0.01)
         return data
