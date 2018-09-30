@@ -70,6 +70,7 @@ def main():
         data = {'counter': 0, 'clkLastState': GPIO.input(CLK), 'currentSite': sites[0]}
 
         data = set_site(data)
+        close_site()
 
         while True:
             lastCounter = data['counter']
@@ -187,17 +188,7 @@ def open_youtube(url):
 def open_spotify(url):
     global BROWSERNAME
 
-    from pyautogui import hotkey, press, keyUp, keyDown
-
-    print('open spotify with url ' + url)
-
-    if BROWSERNAME == 'Chromium':
-        system('chromium-browser %s &' % url)
-    elif BROWSERNAME == 'Firefox':
-        system('firefox %s &' % url)
-
-    else:
-        print("There are no browser named " + BROWSERNAME)
+    system('sudo systemctl start raspotify.service')
 
 
 def close_site():
@@ -220,6 +211,8 @@ def close_site():
 
     else:
         print("There are no browser named " + BROWSERNAME)
+
+    system('sudo systemctl stop raspotify.service')
 
 
 sites = [
