@@ -67,9 +67,9 @@ def init():
     try:
 
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(CLK, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-        GPIO.setup(DT, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-        GPIO.setup(BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.setup(CLK, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        GPIO.setup(DT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        GPIO.setup(BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
     except NameError:
         print("GPIO is not defined. Uncomment the import if you are using a Raspberry")
