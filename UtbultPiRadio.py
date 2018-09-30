@@ -40,7 +40,6 @@ def main():
 
        #  data['currentSite']['open'](data['currentSite']['url'])
 
-        print("Here")
         while True:
             lastCounter = data['counter']
 
@@ -49,6 +48,7 @@ def main():
             if lastCounter != data['counter']:
                 print(data['counter'])
 
+            print("Here")
             # data = set_site(data)
 
 
