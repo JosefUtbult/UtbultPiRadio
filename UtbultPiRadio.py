@@ -1,6 +1,6 @@
 from gpiozero import LED
 from RPi import GPIO
-from time import sleep, time
+from time import sleep
 from os import system
 from pyvirtualdisplay import Display
 
@@ -12,7 +12,6 @@ BUTTON = 22
 ROTATIONAMOUNT = 20
 
 # leds = [LED(5), LED(6), LED(13), LED(19), LED(26)]
-lastTime = None
 display = None
 
 
@@ -41,8 +40,7 @@ def main():
 
        #  data['currentSite']['open'](data['currentSite']['url'])
 
-        lastTime = time()
-
+        print("Here")
         while True:
             lastCounter = data['counter']
 
@@ -52,6 +50,7 @@ def main():
                 print(data['counter'])
 
             # data = set_site(data)
+
 
     finally:
         print('Terminating process')
@@ -73,15 +72,6 @@ def init():
 
     except NameError:
         print("GPIO is not defined. Uncomment the import if you are using a Raspberry")
-
-
-def clock_up(data):
-    global lastTime
-    if time() - lastTime >= 4:
-        lastTime = time()
-        data['counter'] += 1
-
-    return data
 
 
 def read_encoder(data):
@@ -108,7 +98,7 @@ def read_encoder(data):
 
         # print(data)
 
-        sleep(1)
+        sleep(0.01)
         return data
 
     except ValueError as e:
