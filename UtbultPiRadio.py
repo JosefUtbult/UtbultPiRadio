@@ -27,7 +27,6 @@ def main():
     DISPLAYSTATE = True
     BROWSERNAME = 'Chromium'
 
-
     for instance in range(0, len(argv)):
         try:
 
@@ -46,10 +45,8 @@ def main():
 
                         BROWSERNAME = 'Firefox'
 
-
-
-
         except IndexError:
+
             pass
 
     try:
@@ -174,6 +171,8 @@ def set_site(data):
 
 
 def open_youtube(url):
+    global BROWSERNAME
+
     print('open youtube with url ' + url)
 
     if BROWSERNAME == 'Chromium':
@@ -184,7 +183,12 @@ def open_youtube(url):
     else:
         print("There are no browser named " + BROWSERNAME)
 
+
 def open_spotify(url):
+    global BROWSERNAME
+
+    from pyautogui import hotkey, press, keyUp, keyDown
+
     print('open spotify with url ' + url)
 
     if BROWSERNAME == 'Chromium':
@@ -197,6 +201,8 @@ def open_spotify(url):
 
 
 def close_site():
+    from pyautogui import hotkey, press, keyUp, keyDown
+
     print('close site')
 
     keyDown('w')
