@@ -77,6 +77,7 @@ def main():
 
         data = set_site(data)
         close_site()
+        data['currentSite']['open'](data['currentSite']['url'])
 
         while True:
             lastCounter = data['counter']
