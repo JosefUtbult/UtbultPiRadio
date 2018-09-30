@@ -105,7 +105,7 @@ def read_encoder(data):
     except ValueError as e:
         print("Tried to run read_encoder with an incorrect input list. \n" + e)
 
-     return {'counter': 0, 'clkLastState': 0, 'currentSite': data['currentSite']}
+        return {'counter': 0, 'clkLastState': 0, 'currentSite': data['currentSite']}
 
 
 def set_site(data):
@@ -123,11 +123,11 @@ def set_site(data):
         data['currentSite'] = sites[index % len(sites)]
 
         data['currentSite']['open'](data['currentSite']['url'])
-        print('Changing site to %d' % sites.index(data['currentSite']))
+        print('Changing site to %d' % sites.index(data['currentSite']['url']))
 
     elif data['counter'] <= -1 * ROTATIONAMOUNT:
 
-        data['counter'] = min(data['counter'] - ROTATIONAMOUNT, 0)
+        data['counter'] = min(data['counter'] + ROTATIONAMOUNT, 0)
 
         close_site()
 
@@ -135,7 +135,7 @@ def set_site(data):
         data['currentSite'] = sites[index % len(sites)]
 
         data['currentSite']['open'](data['currentSite']['url'])
-        print('Changing site to %d' % sites.index(data['currentSite']))
+        print('Changing site to %d' % sites.index(data['currentSite']['url']))
 
     return data
 
@@ -155,7 +155,6 @@ def open_spotify(url):
 def close_site():
     print('close site')
     
-    # hotkey('w', 'ctrl')
     keyDown('w')
     keyDown('ctrl')
     sleep(1)
