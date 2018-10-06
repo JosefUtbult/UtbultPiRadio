@@ -1,96 +1,149 @@
-# from gpiozero import LED
-# from RPi import GPIO
-from time import sleep, time
+from gpiozero import LED
+from RPi import GPIO
+from time import sleep
 from os import system
+from sys import argv
+from pyvirtualdisplay import Display
 
 # from pyautogui import hotkey, press, keyUp, keyDown
 
 CLK = 17
-DT = 18
-ROTATIONAMOUNT = 4
+DT = 27
+BUTTON = 22
+ROTATIONAMOUNT = 10
+DISPLAYSTATE = None
+BROWSERNAME = None
 
 # leds = [LED(5), LED(6), LED(13), LED(19), LED(26)]
-lastTime = None
+display = None
 
 
 def main():
     global lastTime
+    global display
+    global DISPLAYSTATE
+    global BROWSERNAME
 
-    while True:
-    	try:
-		from pyautogui import hotkey, press, keyUp, keyDown
-		break
-    	except:
-		print("Trying to open display")
-		sleep(2)
+    DISPLAYSTATE = True
+    BROWSERNAME = 'Chromium'
+
+    for instance in range(0, len(argv)):
+        try:
+
+            if argv[instance] == '-display':
+
+                if argv[instance + 1] in ['false', 'FALSE', 'False']:
+                    DISPLAYSTATE = False
+                    print("Using the native display")
+                else:
+                    print("Generating a virtul display")
+
+            if argv[instance] == '-browser':
+
+                if argv[instance + 1] in ['chromium', 'Chromium']:
+
+                    BROWSERNAME = 'Chromium'
+                    print("Seting browser to Chromium")
+
+                elif argv[instance + 1] in ['firefox', 'Firefox']:
+
+                    BROWSERNAME = 'Firefox'
+                    print("Seting browser to Firefox")
 
 
-    data = {'counter': 0, 'clkLastState': 0, 'currentSite': sites[0]}
+        except IndexError:
 
-    data['currentSite']['open'](data['currentSite']['url'])
+            pass
 
-    lastTime = time()
+    try:
 
-    init()
+        if DISPLAYSTATE:
+            display = Display(visible=0, size=(800, 600))
+            display.start()
 
-    
+        while True:
+            try:
+                from pyautogui import hotkey, press, keyUp, keyDown
+                print("Imported pyautogui!")
+                break
 
-#    while True:
-#        lastCounter = data['counter']
-#        data = set_site(clock_up(data))
-#
-#        if lastCounter != data['counter']:
-#            print(data['counter'])
+            except:
+                print("Could not open pyautogui")
+                sleep(2)
 
+        init()
+
+        data = {'counter': 0, 'clkLastState': GPIO.input(CLK), 'currentSite': sites[0]}
+
+        close_site()
+        data['currentSite']['open'](data['currentSite']['url'])
+
+        while True:
+            lastCounter = data['counter']
+
+            data = read_encoder(data)
+
+            if lastCounter != data['counter']:
+                print(data['counter'])
+                data = set_site(data)
+
+            data = set_site(data)
+
+    finally:
+        print('Terminating process')
+
+        system('pkill -f chromium-browser')
+
+        GPIO.cleanup()
+
+        if DISPLAYSTATE:
+            display.stop()
 
 
 def init():
     try:
-        GPIO.setmode(GPIO.BCM)
 
-        GPIO.setup(CLK, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-        GPIO.setup(DT, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(CLK, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        GPIO.setup(DT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        GPIO.setup(BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
     except NameError:
         print("GPIO is not defined. Uncomment the import if you are using a Raspberry")
 
 
-def clock_up(data):
-    global lastTime
-    if time() - lastTime >= 4:
-        lastTime = time()
-        data['counter'] += 1
-
-    return data
-
-
 def read_encoder(data):
-    data = dict(data)
+    global CLK
+    global DT
 
 
     try:
 
-        clk_state = GPIO.input(CLK)
-        dt_state = GPIO.input(DT)
+        clkState = GPIO.input(CLK)
+        dtState = GPIO.input(DT)
 
-        if clk_state != data['clkLastState']:
+        if clkState != data['clkLastState']:
 
-            if dt_state != clk_state:
+            if dtState != clkState:
 
                 data['counter'] += 1
-
             else:
 
                 data['counter'] -= 1
 
-        data['clkLastState'] = clk_state
+            print(data['counter'])
 
+        data['clkLastState'] = clkState
+
+        # print(data)
+
+        sleep(0.01)
         return data
 
     except ValueError as e:
         print("Tried to run read_encoder with an incorrect input list. \n" + e)
 
-    return {'counter': 0, 'clkLastState': 0}
+        return {'counter': 0, 'clkLastState': 0, 'currentSite': sites[0]}
 
 
 def set_site(data):
@@ -102,19 +155,18 @@ def set_site(data):
 
         data['counter'] = max(data['counter'] - ROTATIONAMOUNT, 0)
 
-        data['currentSite']['close']()
+        close_site()
 
         index = sites.index(data['currentSite']) + 1
         data['currentSite'] = sites[index % len(sites)]
 
         data['currentSite']['open'](data['currentSite']['url'])
 
-
     elif data['counter'] <= -1 * ROTATIONAMOUNT:
 
-        data['counter'] = min(data['counter'] - ROTATIONAMOUNT, 0)
+        data['counter'] = min(data['counter'] + ROTATIONAMOUNT, 0)
 
-        data['currentSite']['close']()
+        close_site()
 
         index = sites.index(data['currentSite']) - 1
         data['currentSite'] = sites[index % len(sites)]
@@ -125,34 +177,33 @@ def set_site(data):
 
 
 def open_youtube(url):
-    print('open youtube with url ' + url)
+    global BROWSERNAME
 
-    system('chromium-browser %s &' % url)
+    print('Open youtube with url ' + url)
+    system('vlc --no-video %s' % url)
+#    
+#   if BROWSERNAME == 'Chromium':
+#       system('chromium-browser %s &' % url)
+#   elif BROWSERNAME == 'Firefox':
+#       system('firefox %s &' % url)
+
+#   else:
+#       print("There are no browser named " + BROWSERNAME)
 
 
-def close_youtube():
-    print('close youtube')
-
-    # hotkey('w', 'ctrl')
-    keyDown('w')
-    keyDown('ctrl')
-    sleep(1)
-
-    keyUp('w')
-    keyUp('ctrl')
-    
-
-    
 def open_spotify(url):
-    print('open spotify with url ' + url)
+    global BROWSERNAME
 
-    system('chromium-browser %s &' % url)
+    print('Opening spotify with raspotify')
+
+    system('sudo systemctl start raspotify.service')
 
 
-def close_spotify():
-    print('close spotify')
+def close_site():
+    from pyautogui import hotkey, press, keyUp, keyDown
 
-    # hotkey('w', 'ctrl')
+    print('close site')
+
     keyDown('w')
     keyDown('ctrl')
     sleep(1)
@@ -160,24 +211,32 @@ def close_spotify():
     keyUp('w')
     keyUp('ctrl')
 
+    if BROWSERNAME == 'Chromium':
+        system('pkill -f chromium-browser')
+
+    elif BROWSERNAME == 'Firefox':
+        system('pkill -f firefox')
+
+    else:
+        print("There are no browser named " + BROWSERNAME)
+
+    system('sudo systemctl stop raspotify.service')
+    system('pkill -f vlc')
 
 sites = [
 
     {'name': 'Calm Piano',
      'open': open_youtube,
-     'close': close_youtube,
      'url': 'https://www.youtube.com/watch?v=rLMHGjoxJdQ'
      },
 
     {'name': 'Rainy Jazz',
      'open': open_youtube,
-     'close': close_youtube,
      'url': 'https://www.youtube.com/watch?v=2ccaHpy5Ewo'
      },
 
     {'name': 'Spotify',
      'open': open_spotify,
-     'close': close_spotify,
      'url': 'https://open.spotify.com'
      }
 
