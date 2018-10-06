@@ -180,7 +180,7 @@ def open_youtube(url):
     global BROWSERNAME
 
     print('Open youtube with url ' + url)
-    system('vlc --no-video %s' % url)
+    system('cvlc %s' % url)
 #    
 #   if BROWSERNAME == 'Chromium':
 #       system('chromium-browser %s &' % url)
@@ -221,7 +221,7 @@ def close_site():
         print("There are no browser named " + BROWSERNAME)
 
     system('sudo systemctl stop raspotify.service')
-    system('pkill -f vlc')
+    system('pkill -f cvlc')
 
 sites = [
 
