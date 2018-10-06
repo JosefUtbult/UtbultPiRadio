@@ -179,14 +179,15 @@ def open_youtube(url):
     global BROWSERNAME
 
     print('Open youtube with url ' + url)
+    system('vlc --no-video %s' % url)
+#    
+#   if BROWSERNAME == 'Chromium':
+#       system('chromium-browser %s &' % url)
+#   elif BROWSERNAME == 'Firefox':
+#       system('firefox %s &' % url)
 
-    if BROWSERNAME == 'Chromium':
-        system('chromium-browser %s &' % url)
-    elif BROWSERNAME == 'Firefox':
-        system('firefox %s &' % url)
-
-    else:
-        print("There are no browser named " + BROWSERNAME)
+#   else:
+#       print("There are no browser named " + BROWSERNAME)
 
 
 def open_spotify(url):
@@ -219,7 +220,7 @@ def close_site():
         print("There are no browser named " + BROWSERNAME)
 
     system('sudo systemctl stop raspotify.service')
-
+    system('pkill -f vlc')
 
 sites = [
 
