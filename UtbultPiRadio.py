@@ -67,6 +67,7 @@ def clock_up(data):
 def read_encoder(data):
     data = dict(data)
 
+
     try:
 
         clk_state = GPIO.input(CLK)
