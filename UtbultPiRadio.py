@@ -180,19 +180,18 @@ def open_youtube(url):
     global BROWSERNAME
 
     print('Open youtube with url ' + url)
-    system('cvlc %s' % url)
-#    
-#   if BROWSERNAME == 'Chromium':
-#       system('chromium-browser %s &' % url)
-#   elif BROWSERNAME == 'Firefox':
-#       system('firefox %s &' % url)
-
-#   else:
-#       print("There are no browser named " + BROWSERNAME)
+    # system('cvlc %s' % url)
+    
+    if BROWSERNAME == 'Chromium':
+        system('chromium-browser %s &' % url)
+    elif BROWSERNAME == 'Firefox':
+        system('firefox %s &' % url)
+ 
+    else:
+        print("There are no browser named " + BROWSERNAME)
 
 
 def open_spotify(url):
-    global BROWSERNAME
 
     print('Opening spotify with raspotify')
 
